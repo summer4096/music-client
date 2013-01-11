@@ -1,0 +1,69 @@
+aside {
+	position: fixed;
+	top: 52px;
+	left: 0;
+	bottom: 0;
+	width: 200px;
+	background: #DDD;
+	border-right: 1px solid #8F8F8F;
+}
+
+dl {
+	padding: 0;
+	margin: 0;
+}
+
+dt, dd {
+	padding-left: 10px;
+	height: 24px;
+	line-height: 24px;
+	margin: 0;
+}
+dt {
+	font-weight: bold;
+}
+dd {
+	padding-left: 30px;
+	cursor: pointer;
+	position: relative;
+}
+
+dd.active {
+	height: 20px;
+	line-height: 20px;
+	background: -webkit-linear-gradient(top, #74B0EE 0%, #4C91DA 100%);
+	color: white;
+	box-shadow: 0 1px #5B9ADC, 0 2px #377FC9, 0 -1px #91C1F3, 0 -2px #5296DE;
+	margin: 2px 0;
+}
+
+dd i {
+	width: 16px;
+	height: 100%;
+	position: absolute;
+	left: 10px;
+	
+	font-family: FontAwesome;
+	font-weight: normal;
+	font-style: normal;
+	text-decoration: none;
+	text-align: center;
+	font-size: 1.2em;
+}
+
+dd.library i::before {
+	content: "\f0c2";
+}
+dd.library[data-source="localhost"] i::before {
+	font-size: 1.2em;
+	content: "\f015";
+}
+dd.queue i::before {
+	content: "\f0c9";
+}
+dd.playlist i::before {
+	content: "\f0f6";
+}
+dd.smart.playlist i::before {
+	content: "\f013";
+}

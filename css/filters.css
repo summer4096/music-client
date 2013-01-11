@@ -1,0 +1,39 @@
+.filters {
+	display: none;
+	position: absolute;
+	top: 52px;
+	left: 201px;
+	right: 0;
+	height: 150px;
+}
+
+body.filters-enabled .filters {
+	display: block;
+}
+
+.filters section {
+	width: 50%;
+	height: 100%;
+	float: left;
+	position: relative;
+}
+.filters ul {
+	padding: 0;
+	margin: 0;
+	list-style: none;
+	position: absolute;
+	top: 25px;
+	left: 0;
+	right: 0;
+	bottom: 0;
+	overflow-y: auto;
+}
+.filters li, .filters h2 {
+	padding: 0 10px;
+	line-height: 24px;
+	list-style: none;
+}
+.filters .active {
+	background: #4A90D9;
+	color: white;
+}

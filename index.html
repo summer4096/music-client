@@ -1,0 +1,109 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+	<title>Music</title>
+	<meta name="viewport" content="width=device-width,initial-scale=1">
+	<style></style> <!-- dynamic stylesheet for currently playing song -->
+	<link rel="stylesheet" type="text/css" href="css/scrollbars.css"/>
+	<link rel="stylesheet" type="text/css" href="css/main.css"/>
+	<link rel="stylesheet" type="text/css" href="css/header.css"/>
+	<link rel="stylesheet" type="text/css" href="css/nowplaying.css"/>
+	<link rel="stylesheet" type="text/css" href="css/sidebar.css"/>
+	<link rel="stylesheet" type="text/css" href="css/filters.css"/>
+	<link rel="stylesheet" type="text/css" href="css/songs.css"/>
+	<link rel="stylesheet" href="fa/fontawesome.css">
+	<link rel="icon" href="favicon.ico" sizes="16x16"/>
+	<link rel="icon" href="icon-32.png" sizes="32x32"/>
+	<link rel="icon" href="icon-48.png" sizes="48x48"/>
+	<link rel="icon" href="icon-64.png" sizes="64x64"/>
+</head>
+<body class="filters-enabled">
+
+<header>
+	<section class="controls">
+		<div class="previous"><i class="icon-backward"></i></div>
+		<div class="play"><i class="icon-play"></i></div>
+		<div class="pause"><i class="icon-pause"></i></div>
+		<div class="next"><i class="icon-forward"></i></div>
+	</section>
+	<section class="nowplaying">
+		<div class="songArea">
+			<span class="title"></span> by <span class="artist"></span> on <span class="album"></span>
+		</div>
+		<div class="sliderArea">
+			<time class="elapsed"></time>
+			<div data-slider="true" id="timeslider"></div>
+			<time class="remaining"></time>
+		</div>
+	</section>
+	<section class="search">
+		<input type="text" placeholder="Search"/>
+	</section>
+</header>
+
+<aside>
+	<dl>
+		<dt>Library</dt>
+			<dd class="library" data-source="localhost"><i></i>My Music</dd>
+			<dd class="library" data-source="summer.dev"><i></i>Free Music</dd>
+		<dt>Playlists</dt>
+			<dd class="queue"><i></i>Queue</dd>
+			<dd class="smart playlist"><i></i>Recently Added</dd>
+			<dd class="smart playlist"><i></i>Top Rated</dd>
+			<dd class="playlist"><i></i>Favorite songs</dd>
+			<dd class="playlist"><i></i>Running mix</dd>
+			<dd class="playlist"><i></i>Driving music</dd>
+	</dl>
+</aside>
+
+<article class="filters">
+	<section class="artists">
+		<h2>Artists</h2>
+		<ul></ul>
+	</section>
+	<section class="albums">
+		<h2>Albums</h2>
+		<ul></ul>
+	</section>
+</article>
+
+<article class="songs">
+	<table class="heading">
+		<tr>
+			<th class="status"></th>
+			<th class="track">#</th>
+			<th class="title">Title</th>
+			<th class="length">Length</th>
+			<th class="artist">Artist</th>
+			<th class="album">Album</th>
+			<th class="genre">Genre</th>
+		</tr>
+	</table>
+	<div class="songContainer">
+		<table class="songList"></table>
+	</div>
+</article>
+
+<script src="js/lib/zepto.js"></script>
+<script src="js/lib/zepto-data.js"></script>
+<script src="sm2/script/soundmanager2-nodebug-jsmin.js"></script>
+<script src="js/lib/soundmanager.js"></script>
+<script src="js/lib/events.js"></script>
+
+<script src="js/player.js"></script>
+<script src="js/connection.js"></script>
+<script src="js/db.js"></script>
+<script src="js/templates.js"></script>
+
+<script src="js/ui/filters.js"></script>
+<script src="js/ui/slider.js"></script>
+<script src="js/ui/controls.js"></script>
+<script src="js/ui/nowplaying.js"></script>
+<script src="js/ui/songlist.js"></script>
+<script src="js/ui/sidebar.js"></script>
+<script src="js/ui/setup.js"></script>
+
+</body>
+</html>

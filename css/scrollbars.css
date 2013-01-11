@@ -1,0 +1,30 @@
+/*
+	Taken from Cassidy James' wonderful "elementary OS Scrollbars" chrome
+	extension. If you're reading this, Mr James, I hope you can find it in your
+	heart to forgive me as I didn't ask for permission.
+*/
+
+::-webkit-scrollbar-track-piece{
+	background-color: #FFF;
+	-webkit-border-radius: 0;
+}
+
+::-webkit-scrollbar{
+	width: 8px;
+	height: 8px;
+}
+
+::-webkit-scrollbar-thumb{ 
+	height: 50px;
+	background-color: #999; 
+	-webkit-border-radius: 4px;
+	outline: 2px solid #FFF;
+	outline-offset: -2px;
+	border: 2px solid #FFF;
+}
+
+::-webkit-scrollbar-thumb:hover{
+	height: 50px; 
+	background-color: #9f9f9f;
+	-webkit-border-radius: 4px;
+}
