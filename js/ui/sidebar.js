@@ -6,6 +6,14 @@ $('aside dl').on('click', 'dd.queue:not(.active)', function(){
 $('aside dl').on('click', 'dd.library:not(.active)', function(){
 	filters.enable();
 	DB.current( $(this).data('source') );
+	DB.current().findArtists(function(artists){
+		var html = '';
+		for (var id in artists) {
+			html += '<li data-id="'+id+'">'+artists[id]+'</li>';
+		}
+		$('.filters .artists ul').html(html);
+		$('.filters .artists li').first().trigger('click');
+	});
 });
 
 $('aside dl').on('click', 'dd:not(.active)', function(){

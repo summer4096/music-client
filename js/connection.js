@@ -35,7 +35,7 @@ return function(address){
 	};
 	
 	ws.onclose = function(){
-		console.log('WebExtend socket is closed');
+		console.log('WebExtend socket is closed: '+address);
 		isConnected = false;
 	};
 	
