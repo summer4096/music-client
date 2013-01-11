@@ -4,7 +4,14 @@ header {
 	left: 0;
 	right: 0;
 	height: 50px;
-	background: -webkit-linear-gradient(top, #DEDEDE 0%,#C1C1C1 100%);
+	
+	background-image: -ms-linear-gradient(top, #DEDEDE 0%, #C1C1C1 100%);
+	background-image: -moz-linear-gradient(top, #DEDEDE 0%, #C1C1C1 100%);
+	background-image: -o-linear-gradient(top, #DEDEDE 0%, #C1C1C1 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #DEDEDE), color-stop(1, #C1C1C1));
+	background-image: -webkit-linear-gradient(top, #DEDEDE 0%, #C1C1C1 100%);
+	background-image: linear-gradient(to bottom, #DEDEDE 0%, #C1C1C1 100%);
+	
 	box-shadow: 0 1px 0 #CDCDCD, 0 2px 0 #8D8D8D, 0 3px 0 #CACACA, 0 4px 4px #DADADA;
 }
 .controls {
@@ -50,7 +57,14 @@ body.playing .controls .play {
 	top: 50%;
 	border: 1px solid #888;
 	padding: 0 10px;
-	background: -webkit-linear-gradient(top, #DDD 0%,#F9F9F9 100%);
+	
+	background-image: -ms-linear-gradient(top, #DDDDDD 0%, #F9F9F9 100%);
+	background-image: -moz-linear-gradient(top, #DDDDDD 0%, #F9F9F9 100%);
+	background-image: -o-linear-gradient(top, #DDDDDD 0%, #F9F9F9 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #DDDDDD), color-stop(1, #F9F9F9));
+	background-image: -webkit-linear-gradient(top, #DDDDDD 0%, #F9F9F9 100%);
+	background-image: linear-gradient(to bottom, #DDDDDD 0%, #F9F9F9 100%);
+	
 	box-shadow: 0 0 3px #999 inset, 0 0 3px #DDD;
 	border-radius: 3px;
 	margin-top: -14px;

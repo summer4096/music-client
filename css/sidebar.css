@@ -31,7 +31,14 @@ dd {
 dd.active {
 	height: 20px;
 	line-height: 20px;
-	background: -webkit-linear-gradient(top, #74B0EE 0%, #4C91DA 100%);
+	
+	background-image: -ms-linear-gradient(top, #74B0EE 0%, #4C91DA 100%);
+	background-image: -moz-linear-gradient(top, #74B0EE 0%, #4C91DA 100%);
+	background-image: -o-linear-gradient(top, #74B0EE 0%, #4C91DA 100%);
+	background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0, #74B0EE), color-stop(1, #4C91DA));
+	background-image: -webkit-linear-gradient(top, #74B0EE 0%, #4C91DA 100%);
+	background-image: linear-gradient(to bottom, #74B0EE 0%, #4C91DA 100%);
+	
 	color: white;
 	box-shadow: 0 1px #5B9ADC, 0 2px #377FC9, 0 -1px #91C1F3, 0 -2px #5296DE;
 	margin: 2px 0;
