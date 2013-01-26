@@ -24,16 +24,25 @@ var currentSongList = [];
 
 var renderSongs = function(songIDs){
 	currentSongList = songIDs;
-	var list = DB.current().songList(songIDs).toArray();
+	
 	var html = '';
-	for (var i in list) {
-		html += templates.row( $.extend({}, list[i], {length: makeLength(list[i].length)}) );
+	for (var i in currentSongList) {
+		var songInfo;
+		if (typeof currentSongList[i] == 'string') {
+			songInfo = DB.current().getSong(currentSongList[i]);
+		} else {
+			songInfo = DB.get( currentSongList[i][0] ).getSong( currentSongList[i][1] );
+		}
+		html += templates.row( $.extend({}, songInfo, {length: makeLength(songInfo.length)}) );
 	}
 	$('article .songList').html(html);
 };
 
 $('.songList').on('dblclick', '.song', function(){
-	player.queue = currentSongList;
+	player.queue = [];
+	for (var i in currentSongList) {
+		player.queue.push([DB._current, currentSongList[i]]);
+	}
 	player.queuePosition = $(this).index();
 	
 	player.newSong();

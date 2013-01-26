@@ -10,11 +10,14 @@ Player.prototype.paused = false;
 
 Player.prototype.newSong = function(songID){
 	if (!songID) {
-		songID = this.queue[ this.queuePosition ];
+		songID = this.queue[ this.queuePosition ][1];
+		songDB = DB.get( this.queue[ this.queuePosition ][0] );
+	} else {
+		songDB = DB.current();
 	}
 	this.songData = $.extend({},
-		DB.current().getSong(songID),
-		{file: DB.current().url(songID)});
+		songDB.getSong(songID),
+		{file: songDB.url(songID)});
 	
 	this.stop();
 	if (this.sound) {

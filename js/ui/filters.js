@@ -49,26 +49,15 @@ var filters = {
 	enable: function(){
 		if (this.status == 'enabled') return;
 		if (this.status == '') {
-			DB.current().findArtists(function(artists){
-				var html = '';
-				for (var id in artists) {
-					html += '<li data-id="'+id+'">'+artists[id]+'</li>';
-				}
-				$('.filters .artists ul').html(html);
-				$('.filters .artists li').first().trigger('click');
-			});
 			this.status = 'enabled';
 			return;
 		}
 		this.status = 'enabled';
 		$('body').removeClass('filters-disabled').addClass('filters-enabled');
-		renderSongs(this.filteredSongs);
-		delete this.filteredSongs;
 	},
 	disable: function(){
 		if (this.status == 'disabled') return;
 		this.status = 'disabled';
-		this.filteredSongs = currentSongList;
 		$('body').removeClass('filters-enabled').addClass('filters-disabled');
 	}
 };

@@ -49,6 +49,9 @@ DB.get = function(server){
 	return DB.connections[server];
 };
 DB.current = function(newCurrent){
+	if (DB._current == newCurrent) {
+		return false;
+	}
 	if (newCurrent) {
 		DB._current = newCurrent;
 	} else {
