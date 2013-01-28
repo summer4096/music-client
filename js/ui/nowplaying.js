@@ -43,8 +43,10 @@ var stopAnimating = function(){
 
 var lastPosition = 0;
 var lastPositionTime;
+var hasPlayed = false;
 var pauseTime;
 player.on('playing', function(){
+	hasPlayed = true;
 	lastPositionTime = (new Date()).getTime();
 	lastPosition = player.sound.position;
 });
@@ -55,6 +57,8 @@ var pos = function(){
 	} else {
 		if (player.paused) {
 			return lastPosition;
+		} else if (!hasPlayed){
+			return 0;
 		} else {
 			return (new Date()).getTime()-lastPositionTime+lastPosition;
 		}
@@ -68,6 +72,7 @@ player.on('pause', function(){
 player.on('stop', function(){
 	pauseTime = 0;
 	lastPosition = 0;
+	hasPlayed = false;
 	stopAnimating();
 });
 player.on('play', function(){
@@ -93,9 +98,6 @@ player.on('newSong', function(){
 });
 
 var skip = false;
-
-setInterval(function(){
-}, 1000);
 
 var drawFrame = function(){
 	if (stopIt) {
