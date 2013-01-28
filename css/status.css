@@ -1,0 +1,26 @@
+.loading, .error {
+	display: none;
+	position: absolute;
+	top: 52px;
+	left: 201px;
+	right: 0;
+	bottom: 0;
+	background: #EEE;
+}
+
+.loading h2 {
+	height: 100px;
+	line-height: 100px;
+	
+	position: absolute;
+	top: 50%;
+	left: 0;
+	right: 0;
+	
+	margin: -50px 0 0;
+	
+	text-align: center;
+	font-size: 4em;
+	color: #999;
+	font-weight: normal;
+}
