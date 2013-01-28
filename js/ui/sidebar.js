@@ -5,6 +5,7 @@ $('aside dl').on('click', 'dd.queue:not(.active)', function(){
 
 $('aside dl').on('click', 'dd.library:not(.active)', function(){
 	if (!DB.current( $(this).data('source') )) {
+		$('body').trigger('loading');
 		DB.current().findArtists(function(artists){
 			var html = '';
 			for (var id in artists) {

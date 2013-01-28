@@ -16,6 +16,7 @@ $('.filters').on('dblclick', 'li', function(){
 });
 
 $('.filters .artists').on('change', function(e){
+	$('body').trigger('loading');
 	DB.current().findAlbumsByArtist(e.data.item, function(albums){
 		var html = '<li data-value="__all">All</li>';
 		
@@ -24,6 +25,7 @@ $('.filters .artists').on('change', function(e){
 		}
 		$('.filters .albums ul').html(html);
 		$('.filters .albums li').first().trigger('click');
+		$('body').trigger('loaded');
 	});
 });
 
