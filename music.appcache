@@ -1,5 +1,5 @@
 CACHE MANIFEST
-# version 5
+# version 6
 slider.png
 # css
 css/scrollbars.css
@@ -13,6 +13,8 @@ css/songs.css
 fa/fontawesome.css
 fa/fontawesome-webfont.eot
 fa/fontawesome-webfont.woff
+fa/fontawesome-webfont.afm
+fa/fontawesome-webfont.ttf
 # js
 js/lib/events.js
 js/lib/soundmanager.js
