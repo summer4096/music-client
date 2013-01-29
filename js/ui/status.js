@@ -14,9 +14,12 @@ body.on('loaded', function(){
 	loading.removeClass('visible');
 });
 
-body.on('error', function(ev, title, text){
-	error.find('h2').text(title);
-	error.find('p').text(text);
+body.on('error', function(ev, args){
+	error.find('h2').text(args.title);
+	error.find('h2').prepend('<i class="icon-exclamation-sign"></i> ');
+	error.find('p').text(args.text);
+	error.attr('class', 'error');
+	error.addClass(args.type);
 	error.addClass('visible');
 	loading.removeClass('visible');
 });

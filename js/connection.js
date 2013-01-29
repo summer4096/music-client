@@ -1,9 +1,10 @@
 var connection = (function(){
-return function(address){
+var cn = function(address){
 	var ws = new WebSocket(address);
 	
 	var isConnected = false;
 	var messageQueue = [];
+	
 	var send = function(msg){
 		if (!isConnected) {
 			messageQueue.push(msg);
@@ -13,9 +14,12 @@ return function(address){
 		}
 	};
 	
+	var self = this;
+	
 	ws.onopen = function(){
 		console.log('WebExtend socket is open');
 		isConnected = true;
+		self.emit('status', 'open');
 		var msg;
 		while (msg = messageQueue.shift()) {
 			send(msg);
@@ -37,6 +41,7 @@ return function(address){
 	ws.onclose = function(){
 		console.log('WebExtend socket is closed: '+address);
 		isConnected = false;
+		self.emit('status', 'closed');
 	};
 	
 	var callbacks = {};
@@ -78,4 +83,6 @@ return function(address){
 		send(msg);
 	};
 };
+cn.prototype = EventEmitter.prototype;
+return cn;
 })();

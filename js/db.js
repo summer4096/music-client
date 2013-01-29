@@ -3,7 +3,14 @@ var DB = function(server){
 	this.port = 5775;
 	this.ws = new connection('ws://'+server+':'+this.port);
 	
+	this.status = false;
+	
 	var self = this;
+	
+	this.ws.on('status', function(status){
+		self.status = status;
+		self.emit('status', status);
+	});
 	
 	this.ws.run('music', 'sync', function(data){
 		for (var i in data.songs) {
@@ -27,6 +34,8 @@ var DB = function(server){
 		findAlbumsByArtist: {}
 	};
 };
+
+DB.prototype = EventEmitter.prototype;
 
 DB.prototype.getSong = function(id){
 	var song = this.songs[id];
