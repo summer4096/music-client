@@ -69,8 +69,15 @@ dd.queue i::before {
 	content: "\f0c9";
 }
 dd.playlist i::before {
-	content: "\f0f6";
+	content: "\f07b";
 }
-dd.smart.playlist i::before {
+.smart.playlist i::before {
 	content: "\f013";
+}
+
+.smart.playlist.byTime i::before {
+	content: "\f073";
+}
+.smart.playlist.byRating i::before {
+	content: "\f005";
 }
