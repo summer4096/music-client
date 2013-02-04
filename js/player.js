@@ -8,16 +8,22 @@ Player.prototype = EventEmitter.prototype;
 Player.prototype.hasBeenPlayed = false;
 Player.prototype.paused = false;
 
-Player.prototype.newSong = function(songID){
+Player.prototype.newSong = function(songID, position){
 	if (!songID) {
 		songID = this.queue[ this.queuePosition ][1];
 		songDB = DB.get( this.queue[ this.queuePosition ][0] );
+	} else if (typeof songID == 'object'){
+		songDB = songID[0];
+		songID = songID[1];
 	} else {
 		songDB = DB.current();
 	}
 	this.songData = $.extend({},
 		songDB.getSong(songID),
-		{file: songDB.url(songID)});
+		{
+			file: songDB.url(songID),
+			db: songDB.server+':'+songDB.port
+		});
 	
 	this.stop();
 	if (this.sound) {
@@ -45,6 +51,10 @@ Player.prototype.newSong = function(songID){
 		this.sound.load();
 	} else {
 		this.play();
+	}
+	
+	if (position) {
+		this.sound.setPosition(position);
 	}
 	
 	this.emit('newSong');

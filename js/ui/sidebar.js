@@ -24,7 +24,6 @@ $('aside dl').on('click', 'dd.library:not(.active)', function(){
 			$('.filters .artists li').first().trigger('click');
 		});
 		DB.current().once('status', function(status){
-			console.log(1, status);
 			if (status == 'closed' && loaded == false) {
 				$('body').trigger('error', {title: 'Server is offline', text:'I couldn\'t find any music over there', type: 'waffle'});
 			}

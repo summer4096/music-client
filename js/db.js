@@ -1,6 +1,8 @@
-var DB = function(server){
+var defaultPort = 5775;
+
+var DB = function(server, port){
 	this.server = server;
-	this.port = 5775;
+	this.port = port || defaultPort;
 	this.ws = new connection('ws://'+server+':'+this.port);
 	
 	this.status = false;
@@ -51,11 +53,12 @@ DB.prototype.url = function(id){
 };
 
 DB.connections = {};
-DB.get = function(server){
-	if (!DB.connections[server]) {
-		DB.connections[server] = new DB(server);
+DB.get = function(server, port){
+	port = port || defaultPort;
+	if (!DB.connections[server+':'+port]) {
+		DB.connections[server+':'+port] = new DB(server, port);
 	}
-	return DB.connections[server];
+	return DB.connections[server+':'+port];
 };
 DB.current = function(newCurrent){
 	if (DB._current == newCurrent) {
@@ -118,13 +121,17 @@ DB.prototype.findSongsByArtist = function(artist, callback){
 
 DB.prototype.findArtists = function(callback){
 	if (this.cache['findArtists']) {
-		callback && callback(this.artists);
+		var out = [];
+		for (var i in this.cache['findArtists']) {
+			out.push(this.artists[ this.cache['findArtists'][i] ]);
+		}
+		callback && callback(out);
 		return;
 	}
 	var self = this;
-	this.ws.run('music', 'findArtists', function(){
-		self.cache['findArtists'] = true;
-		callback && callback(self.artists);
+	this.ws.run('music', 'findArtists', function(artistList){
+		self.cache['findArtists'] = artistList;
+		self.findArtists(callback);
 	});
 };
 
@@ -144,3 +151,29 @@ DB.prototype.findAlbumsByArtist = function(artist, callback){
 	});
 };
 
+DB.prototype.findSong = function(songID, callback){
+	this.findSongs([songID], function(songs){
+		callback && callback(songs[0]);
+	});
+};
+
+DB.prototype.findSongs = function(songIDs, callback){
+	var fetch = [];
+	for (var i in songIDs) {
+		if (!this.songs[songIDs[i]]) {
+			fetch.push(songIDs[i]);
+		}
+	}
+	var self = this;
+	if (fetch.length) {
+		this.ws.run('music', 'findSongs', fetch, function(){
+			self.findSongs(songIDs, callback);
+		});
+	} else {
+		var out = [];
+		for (var i in songIDs) {
+			out.push( this.getSong(songIDs[i]) );
+		}
+		callback && callback(out);
+	}
+};

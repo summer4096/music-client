@@ -52,6 +52,7 @@ player.on('playing', function(){
 });
 
 var pos = function(){
+	if (player.sound.position) return player.sound.position;
 	if (!lastPositionTime) {
 		return 0;
 	} else {
@@ -112,8 +113,10 @@ var drawFrame = function(){
 		
 		if (total == 0) {
 			$('#timeslider').simpleSlider("setRatio", 0);
+			player.emit('position', 0);
 		} else {
 			$('#timeslider').simpleSlider("setRatio", current/total);
+			player.emit('position', current);
 		}
 	}
 	skip = !skip;
