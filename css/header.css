@@ -13,6 +13,8 @@ header {
 	background-image: linear-gradient(to bottom, #DEDEDE 0%, #C1C1C1 100%);
 	
 	box-shadow: 0 1px 0 #CDCDCD, 0 2px 0 #8D8D8D, 0 3px 0 #CACACA, 0 4px 4px #DADADA;
+	
+	z-index: 2;
 }
 .controls {
 	position: absolute;
