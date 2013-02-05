@@ -9,7 +9,7 @@ var cn = function(address){
 		if (!isConnected) {
 			messageQueue.push(msg);
 		} else {
-			console.log('Sending message:', msg);
+			//console.debug('Sending message:', msg);
 			ws.send(msg);
 		}
 	};
@@ -17,7 +17,7 @@ var cn = function(address){
 	var self = this;
 	
 	ws.onopen = function(){
-		console.log('WebExtend socket is open');
+		console.log(address, 'is open');
 		isConnected = true;
 		self.emit('status', 'open');
 		var msg;
@@ -27,19 +27,19 @@ var cn = function(address){
 	};
 	
 	ws.onmessage = function(msg){
-		console.log('WebExtend got message:', msg.data);
+		//console.debug(address, 'got message:', msg.data);
 		msg = JSON.parse(msg.data);
 		
 		var functionID = msg[0] || 'unspecified';
 		if (!callbacks[functionID]) {
-			console.error('Server called function '+functionID+' but it doesn\'t exist!');
+			console.error(address, 'server called function '+functionID+' but it doesn\'t exist!');
 		} else {
 			callbacks[functionID].apply(this, msg.slice(1));
 		}
 	};
 	
 	ws.onclose = function(){
-		console.log('WebExtend socket is closed: '+address);
+		console.log(address, 'is closed');
 		isConnected = false;
 		self.emit('status', 'closed');
 	};
