@@ -1,40 +1,26 @@
 $('aside dl').on('click', 'dd.queue:not(.active)', function(){
-	filters.disable();
-	renderSongs(player.queue);
+	$('body').trigger('state', {
+		mode: 'queue'
+	});
 });
 
 $('aside dl').on('click', 'dd.library:not(.active)', function(){
-	if (!DB.current( $(this).data('source') )) {
-		
-		if (DB.current().status == 'closed') {
-			$('body').trigger('error', {title: 'Server is offline', text:'I couldn\'t find any music over there', type: 'waffle'});
-			return;
-		}
-		
-		$('body').trigger('loading');
-		
-		var loaded = false;
-		DB.current().findArtists(function(artists){
-			loaded = true;
-			var html = '';
-			for (var id in artists) {
-				html += '<li data-id="'+id+'">'+artists[id]+'</li>';
-			}
-			$('.filters .artists ul').html(html);
-			$('.filters .artists li').first().trigger('click');
-		});
-		DB.current().once('status', function(status){
-			if (status == 'closed' && loaded == false) {
-				$('body').trigger('error', {title: 'Server is offline', text:'I couldn\'t find any music over there', type: 'waffle'});
-			}
-		});
+	$('body').trigger('state', {
+		mode: 'db',
+		db: $(this).data('source')
+	});
+});
+
+$('body').on('state', function(e){
+	var newState = e.data;
+	var el;
+	if (newState.mode == 'db') {
+		el = $('aside dl dd.library[data-source="'+newState.db+'"]');
+	} else if (newState.mode == 'queue') {
+		el = $('aside dl dd.queue');
 	}
-	filters.enable();
+	if (el) {
+		el.siblings('.active').removeClass('active');
+		el.addClass('active');
+	}
 });
-
-$('aside dl').on('click', 'dd:not(.active)', function(){
-	$(this).siblings('.active').removeClass('active');
-	$(this).addClass('active');
-});
-
-$('aside dd.library').first().trigger('click');

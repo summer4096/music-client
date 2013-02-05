@@ -25,17 +25,14 @@ var currentSongList = [];
 var renderSongs = function(songIDs){
 	currentSongList = songIDs;
 	
-	var html = '';
-	for (var i in currentSongList) {
-		var songInfo;
-		if (typeof currentSongList[i] == 'string') {
-			songInfo = DB.current().getSong(currentSongList[i]);
-		} else {
-			songInfo = DB.get( currentSongList[i][0] ).getSong( currentSongList[i][1] );
+	DB.getSongs(songIDs, function(list){
+		console.log(5, list);
+		var html = '';
+		for (var i in list) {
+			html += templates.row( $.extend({}, list[i], {length: makeLength(list[i].length)}) );
 		}
-		html += templates.row( $.extend({}, songInfo, {length: makeLength(songInfo.length)}) );
-	}
-	$('article .songList').html(html);
+		$('article .songList').html(html);
+	});
 };
 
 $('.songList').on('dblclick', '.song', function(){

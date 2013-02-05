@@ -40,6 +40,7 @@ var DB = function(server, port){
 DB.prototype = EventEmitter.prototype;
 
 DB.prototype.getSong = function(id){
+	if (!this.songs[id]) return false;
 	var song = this.songs[id];
 	var data = $.extend({}, song);
 	data.artist = this.artists[ song.artist ];
@@ -71,6 +72,68 @@ DB.current = function(newCurrent){
 			throw new Error('We ain\'t connected to shit');
 		}
 		return DB.get(DB._current);
+	}
+};
+
+DB.getSongs = function(list, callback){
+	var fetch = {};
+	for (var i in list) {
+		var dbName;
+		var song = list[i];
+		if (typeof song == 'string') {
+			dbName = DB._current;
+		} else {
+			dbName = song[0];
+			song = song[1];
+		}
+		if (typeof fetch[ dbName ] == 'undefined') {
+			fetch[ dbName ] = {};
+		}
+		fetch[ dbName ][song] = true;
+	}
+	for (var dbName in fetch) {
+		var currentDB = DB.get(dbName);
+		var fetchedSongs = 0;
+		for (var songID in fetch[dbName]) {
+			if (typeof currentDB.songs[songID] != 'undefined') {
+				delete fetch[dbName][songID];
+			} else {
+				fetchedSongs++;
+			}
+		}
+		if (!fetchedSongs) {
+			delete fetch[dbName];
+		}
+	}
+	
+	var totalDBs = Object.keys(fetch).length;
+	var doneDBs = 0;
+	
+	if (totalDBs == 0) {
+		var out = [];
+		for (var i in list) {
+			var currentDB;
+			var song;
+			if (typeof list[i] == 'string') {
+				currentDB = DB.current();
+				song = list[i];
+			} else {
+				currentDB = DB.get(list[i][0]);
+				song = list[i][1];
+			}
+			out.push( currentDB.getSong(song) );
+		}
+		callback && callback(out);
+		return;
+	}
+	
+	for (var dbName in fetch) {
+		DB.get(dbName).findSongs( Object.keys(fetch[dbName]), function(){
+			doneDBs++;
+			if (doneDBs == totalDBs) {
+				DB.getSongs(list, callback);
+			}
+		});
 	}
 };
 
