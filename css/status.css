@@ -17,6 +17,8 @@
 	-ms-transition: opacity 0.3s;
 	
 	opacity: 0;
+	
+	background: rgba(255, 255, 255, 0.5);
 }
 .loading.visible {
 	opacity: 1;
