@@ -19,6 +19,7 @@ var cn = function(address){
 	ws.onopen = function(){
 		console.log(address, 'is open');
 		isConnected = true;
+		self.status = 'open';
 		self.emit('status', 'open');
 		var msg;
 		while (msg = messageQueue.shift()) {
@@ -41,6 +42,7 @@ var cn = function(address){
 	ws.onclose = function(){
 		console.log(address, 'is closed');
 		isConnected = false;
+		self.status = 'closed';
 		self.emit('status', 'closed');
 	};
 	
@@ -77,6 +79,10 @@ var cn = function(address){
 	};
 	
 	this.run = function(){
+		if (this.status == 'closed') {
+			self.emit('status', 'closed');
+			return;
+		}
 		var args = Array.prototype.slice.call(arguments);
 		walker(args);
 		var msg = JSON.stringify(args);

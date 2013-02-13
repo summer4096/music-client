@@ -26,7 +26,6 @@ var renderSongs = function(songIDs){
 	currentSongList = songIDs;
 	
 	DB.getSongs(songIDs, function(list){
-		console.log(5, list);
 		var html = '';
 		for (var i in list) {
 			html += templates.row( $.extend({}, list[i], {length: makeLength(list[i].length)}) );
