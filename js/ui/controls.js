@@ -24,7 +24,10 @@ player.on('finish', function(){
 
 $('.controls .play').click(function(){
 	if (!player.sound && currentSongList.length) {
-		player.queue = currentSongList;
+		player.queue = [];
+		for (var i in currentSongList) {
+			player.queue.push([DB._current, currentSongList[i]]);
+		}
 		player.queuePosition = 0;
 		player.newSong();
 	}
