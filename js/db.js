@@ -1,4 +1,4 @@
-var defaultPort = 5775;
+var defaultPort = 5776;
 
 var DB = function(server, port){
 	this.server = server;
@@ -80,7 +80,7 @@ DB.getSongs = function(list, callback){
 	for (var i in list) {
 		var dbName;
 		var song = list[i];
-		if (typeof song == 'string') {
+		if (typeof song == 'string' || typeof song == 'number') {
 			dbName = DB._current;
 		} else {
 			dbName = song[0];
@@ -114,7 +114,7 @@ DB.getSongs = function(list, callback){
 		for (var i in list) {
 			var currentDB;
 			var song;
-			if (typeof list[i] == 'string') {
+			if (typeof list[i] == 'string' || typeof list[i] == 'number') {
 				currentDB = DB.current();
 				song = list[i];
 			} else {
@@ -205,9 +205,9 @@ DB.prototype.findAlbumsByArtist = function(artist, callback){
 	}
 	var self = this;
 	this.ws.run('music', 'findAlbumsByArtist', artist, function(albumIDs){
-		var albumNames = [];
+		var albumNames = {};
 		for (var i in albumIDs) {
-			albumNames.push(self.albums[albumIDs[i]]);
+			albumNames[albumIDs[i]] = self.albums[albumIDs[i]];
 		}
 		self.cache['findAlbumsByArtist'][artist] = albumNames;
 		callback && callback(albumNames);

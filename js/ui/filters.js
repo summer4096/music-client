@@ -1,6 +1,6 @@
 $('.filters').on('click', 'li', function(){
 	$(this).parent().parent().trigger('change', {
-		item: $(this).data('value') || $(this).text()
+		item: $(this).data('id') || $(this).text()
 	});
 });
 
@@ -14,7 +14,7 @@ $('.filters .artists').on('change', function(e){
 	var newStuff = {dbs: {}};
 	newStuff.dbs[DB._current] = {
 		artist: e.data.item,
-		album: '__all'
+		album: 0
 	};
 	$('body').trigger('state', newStuff);
 });
@@ -29,28 +29,17 @@ $('.filters .albums').on('change', function(e){
 
 $('body').on('stateChange', function(e){
 	var state = e.data;
-	if (state.dbs[state.db].artist) {
+	console.log(2, state.dbs[state.db].artist);
+	if (state.dbs[state.db] && state.dbs[state.db].artist) {
 		$('.filters .artists .active').removeClass('active');
-		$('.filters .artists li').each(function(){
-			if ($(this).text() == state.dbs[state.db].artist) {
-				$(this).addClass('active');
-				return false;
-			}
-		});
+		console.log($('.filters .artists li[data-id="'+state.dbs[state.db].artist+'"]'));
+		$('.filters .artists li[data-id="'+state.dbs[state.db].artist+'"]').addClass('active');
 		filters.fixScrolling('artists');
 	}
 	
-	if (state.dbs[state.db].album) {
+	if (state.dbs[state.db] && state.dbs[state.db].album) {
 		$('.filters .albums .active').removeClass('active');
-		$('.filters .albums li').each(function(){
-			if ($(this).data('value') && $(this).data('value') == state.dbs[state.db].album) {
-				$(this).addClass('active');
-				return false;
-			} else if ($(this).text() == state.dbs[state.db].album) {
-				$(this).addClass('active');
-				return false;
-			}
-		});
+		$('.filters .albums li[data-id="'+state.dbs[state.db].album+'"]').addClass('active');
 		filters.fixScrolling('albums');
 	}
 });

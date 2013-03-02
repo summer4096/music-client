@@ -50,14 +50,16 @@ $('body').on('state', function(e){
 				}
 			});
 			
-			DB.current().findArtists(function(artists){
+			DB.current().findArtists(function(){
 				loaded = true;
 				
 				$('body').trigger('loaded');
 				
+				var artists = DB.current().artists;
+				
 				var html = '';
 				for (var id in artists) {
-					if (artists[id] == dbState.artist) {
+					if (id == dbState.artist) {
 						html += '<li data-id="'+id+'" class="active">'+artists[id]+'</li>';
 					} else {
 						html += '<li data-id="'+id+'">'+artists[id]+'</li>';
@@ -73,24 +75,28 @@ $('body').on('state', function(e){
 		}
 	}
 	
-	if (state.mode == 'db' && (oldState.mode != 'db' || dbState.artist != oldDbState.artist)) {
+	if (state.mode == 'db' &&
+		dbState.artist &&
+		(oldState.mode != 'db' ||
+			dbState.artist != oldDbState.artist)) {
 		$('body').trigger('loading');
 		var current = DB._current;
 		DB.current().findAlbumsByArtist(dbState.artist, function(albums){
+			console.log('got albums', albums);
 			if (DB._current != current) return;
-			if (dbState.album == '__all') {
-				var html = '<li data-value="__all" class="active">All</li>';
+			if (dbState.album == 0) {
+				var html = '<li data-id="0" class="active">All</li>';
 			} else {
-				var html = '<li data-value="__all">All</li>';
+				var html = '<li data-id="0">All</li>';
 			}
 			
 			for (var id in albums) {
-				var dataValue = albums[id] ? '' : ' data-value=""';
+				var dataID = ' data-id="'+id+'"';
 				var albumName = albums[id] ? albums[id] : 'Unknown Album';
-				if (dbState.album == albums[id]) {
-					html += '<li class="active"'+dataValue+'>'+albumName+'</li>';
+				if (dbState.album == id) {
+					html += '<li class="active"'+dataID+'>'+albumName+'</li>';
 				} else {
-					html += '<li'+dataValue+'>'+albumName+'</li>';
+					html += '<li'+dataID+'>'+albumName+'</li>';
 				}
 			}
 			$('.filters .albums ul').html(html);
@@ -102,9 +108,10 @@ $('body').on('state', function(e){
 	}
 	
 	if (state.mode == 'db' &&
+		dbState.artist && 
 		(oldState.mode != 'db' ||
 		dbState.album != oldDbState.album ||
-		(dbState.artist != oldDbState.artist && dbState.album == '__all'))) {
+		(dbState.artist != oldDbState.artist && dbState.album == 0))) {
 		var current = DB._current;
 		
 		var db = DB.current();
@@ -112,11 +119,20 @@ $('body').on('state', function(e){
 		db.findSongsByArtist(dbState.artist, function(list){
 			if (DB._current != current) return;
 			var newList = [];
+			console.log(1, list);
 			for (var i in list) {
-				if (dbState.album == '__all' || db.getSong(list[i]).album == dbState.album) {
+				if (dbState.album == 0 || db.songs[list[i]].album == dbState.album) {
 					newList.push(list[i]);
 				}
 			}
+			newList.sort(function(a, b){
+				if (db.songs[a].album != db.songs[b].album) {
+					return db.albums[db.songs[a].album].localeCompare(db.albums[db.songs[b].album]);
+				} else {
+					return db.songs[a].track - db.songs[b].track;
+				}
+			});
+			console.log('newList', newList);
 			renderSongs(newList);
 		});
 	}
@@ -142,7 +158,8 @@ if (localStorage.state) {
 } else {
 	$('body').trigger('state', {
 		mode: 'db',
-		db: 'localhost'
+		db: 'localhost',
+		dbs: {}
 	});
 }
 
