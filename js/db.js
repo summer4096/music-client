@@ -1,4 +1,4 @@
-var defaultPort = 5776;
+var defaultPort = 5775;
 
 var DB = function(server, port){
 	this.server = server;
