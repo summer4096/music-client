@@ -58,13 +58,17 @@ $('body').on('state', function(e){
 				var artists = DB.current().artists;
 				
 				var html = '';
-				for (var id in artists) {
+				
+				sortObject(artists, function(a, b){
+					return a.localeCompare(b);
+				}, function(id, artistName){
 					if (id == dbState.artist) {
-						html += '<li data-id="'+id+'" class="active">'+artists[id]+'</li>';
+						html += '<li data-id="'+id+'" class="active">'+artistName+'</li>';
 					} else {
-						html += '<li data-id="'+id+'">'+artists[id]+'</li>';
+						html += '<li data-id="'+id+'">'+artistName+'</li>';
 					}
-				}
+				});
+				
 				$('.filters .artists ul').html(html);
 				if (!dbState.artist) {
 					$('.filters .artists li').first().trigger('click');
@@ -82,7 +86,6 @@ $('body').on('state', function(e){
 		$('body').trigger('loading');
 		var current = DB._current;
 		DB.current().findAlbumsByArtist(dbState.artist, function(albums){
-			console.log('got albums', albums);
 			if (DB._current != current) return;
 			if (dbState.album == 0) {
 				var html = '<li data-id="0" class="active">All</li>';
@@ -90,15 +93,18 @@ $('body').on('state', function(e){
 				var html = '<li data-id="0">All</li>';
 			}
 			
-			for (var id in albums) {
+			sortObject(albums, function(a, b){
+				return a.localeCompare(b);
+			}, function(id, albumName){
+				albumName = albumName || 'Unknown Album';
 				var dataID = ' data-id="'+id+'"';
-				var albumName = albums[id] ? albums[id] : 'Unknown Album';
 				if (dbState.album == id) {
 					html += '<li class="active"'+dataID+'>'+albumName+'</li>';
 				} else {
 					html += '<li'+dataID+'>'+albumName+'</li>';
 				}
-			}
+			});
+			
 			$('.filters .albums ul').html(html);
 			if (dbState.album) {
 				filters.fixScrolling('albums');
@@ -119,7 +125,6 @@ $('body').on('state', function(e){
 		db.findSongsByArtist(dbState.artist, function(list){
 			if (DB._current != current) return;
 			var newList = [];
-			console.log(1, list);
 			for (var i in list) {
 				if (dbState.album == 0 || db.songs[list[i]].album == dbState.album) {
 					newList.push(list[i]);
@@ -132,7 +137,6 @@ $('body').on('state', function(e){
 					return db.songs[a].track - db.songs[b].track;
 				}
 			});
-			console.log('newList', newList);
 			renderSongs(newList);
 		});
 	}

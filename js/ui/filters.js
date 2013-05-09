@@ -29,10 +29,8 @@ $('.filters .albums').on('change', function(e){
 
 $('body').on('stateChange', function(e){
 	var state = e.data;
-	console.log(2, state.dbs[state.db].artist);
 	if (state.dbs[state.db] && state.dbs[state.db].artist) {
 		$('.filters .artists .active').removeClass('active');
-		console.log($('.filters .artists li[data-id="'+state.dbs[state.db].artist+'"]'));
 		$('.filters .artists li[data-id="'+state.dbs[state.db].artist+'"]').addClass('active');
 		filters.fixScrolling('artists');
 	}
